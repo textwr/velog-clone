@@ -1,0 +1,64 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 25%;
+  flex-basis: 300px;
+  flex-shrink: 0;
+}
+
+.card-title {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 말줄임 적용 */
+}
+
+.card-content {
+  font-size: 1rem;
+  line-height: 1.4;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.card-img {
+  width: 100%;
+}
+
+.middle {
+}
+
+.middle .dateComments {
+  font-size: 0.8rem;
+  display: flex;
+  color: gray;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom .author img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
+
+.bottom .author {
+  display: flex;
+}
+
+.bottom .likes {
+  font-size: 0.8rem;
+}
