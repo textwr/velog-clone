@@ -1,4 +1,4 @@
-const data = {
+const dummyData = {
   trending: [
     {
       id: 1,
@@ -114,4 +114,4 @@ const data = {
   ],
 };
 
-export { data };
+export { dummyData };

@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerMenu {
+  display: flex;
+  align-items: center;
+}
+
+.header div img,
+.header div svg,
+.header div button {
+  padding: 10px;
+}
