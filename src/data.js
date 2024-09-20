@@ -1,4 +1,26 @@
-const dummyData = {
+// localStorage.js
+
+export function getTodos() {
+  const data = localStorage.getItem("todos");
+  if (data) {
+    return JSON.parse(data);
+  } else {
+    return [];
+  }
+}
+
+export function setTodos(todos) {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+export function removeTodo(todo) {
+  const todos = getTodos();
+  const newTodos = todos.filter((e) => e !== todo);
+  setTodos(newTodos);
+  return newTodos;
+}
+
+export const dummyData = {
   trending: [
     {
       id: 1,
@@ -113,5 +135,3 @@ const dummyData = {
     // 추가적인 요소들...
   ],
 };
-
-export { dummyData };

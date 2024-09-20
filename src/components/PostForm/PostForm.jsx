@@ -1,12 +1,14 @@
 import styles from "./styles.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Modal from "./PostFormModal";
 
-export default function PostForm({ setData, topic }) {
+export default function PostForm({ setData, topic, setStatus, addTodo }) {
   const nameRef = useRef();
   const imageRef = useRef();
   const contentRef = useRef();
   const authorRef = useRef();
   const profileImgRef = useRef();
+  const dialogRef = useRef();
 
   function submit(e) {
     e.preventDefault();
@@ -44,71 +46,73 @@ export default function PostForm({ setData, topic }) {
         comments: 0,
       };
 
-      //const prevArr = prev[topic];
-      //const newArr = [...prevArr, newData];
-      prev[topic].push(newData);
-      console.log(prev);
+      //prev[topic].push(newData);
+      addTodo(newData, topic);
+      dialogRef.current.openModal();
       return prev;
     });
   }
 
   return (
-    <div className={styles.postForm}>
-      <form onSubmit={submit}>
-        <div className={styles.name}>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="제목을 입력하세요"
-            ref={nameRef}
-            required
-          />
-        </div>
-        <div className={styles.image}>
-          <input
-            type="text"
-            name="image"
-            id="image"
-            placeholder="이미지 주소를 입력하세요"
-            ref={imageRef}
-            required
-          />
-        </div>
-        <div className={styles.content}>
-          <textarea
-            type="text"
-            name="content"
-            id="content"
-            placeholder="내용을 작성하세요"
-            ref={contentRef}
-            required
-          />
-        </div>
-        <div className={styles.author}>
-          <input
-            type="text"
-            name="author"
-            id="author"
-            placeholder="작성자를 써주세요"
-            ref={authorRef}
-            required
-          />
-        </div>
-        <div className={styles.userImage}>
-          <input
-            type="text"
-            name="userImage"
-            id="userImage"
-            placeholder="작성자의 프로필 이미지 주소를 써주세요"
-            ref={profileImgRef}
-            required
-          />
-        </div>
-        <div>
-          <input type="submit" value="Subscribe!" />
-        </div>
-      </form>
-    </div>
+    <>
+      <Modal ref={dialogRef} setStatus={setStatus}></Modal>
+      <div className={styles.postForm}>
+        <form onSubmit={submit}>
+          <div className={styles.name}>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="제목을 입력하세요"
+              ref={nameRef}
+              required
+            />
+          </div>
+          <div className={styles.image}>
+            <input
+              type="text"
+              name="image"
+              id="image"
+              placeholder="이미지 주소를 입력하세요"
+              ref={imageRef}
+              required
+            />
+          </div>
+          <div className={styles.content}>
+            <textarea
+              type="text"
+              name="content"
+              id="content"
+              placeholder="내용을 작성하세요"
+              ref={contentRef}
+              required
+            />
+          </div>
+          <div className={styles.author}>
+            <input
+              type="text"
+              name="author"
+              id="author"
+              placeholder="작성자를 써주세요"
+              ref={authorRef}
+              required
+            />
+          </div>
+          <div className={styles.userImage}>
+            <input
+              type="text"
+              name="userImage"
+              id="userImage"
+              placeholder="작성자의 프로필 이미지 주소를 써주세요"
+              ref={profileImgRef}
+              required
+            />
+          </div>
+          <div>
+            <input type="submit" value="upload!" />
+          </div>
+        </form>
+      </div>
+    </>
   );
 }

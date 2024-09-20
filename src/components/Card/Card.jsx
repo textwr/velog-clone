@@ -1,6 +1,8 @@
 import styles from "./styles.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useRef, useState } from "react";
+import Modal from "../Modal/Modal";
 
 export default function Card({
   id,
@@ -12,29 +14,40 @@ export default function Card({
   userImage,
   likes,
   comments,
+  setData,
+  topic,
 }) {
+  const [currentDialog, SetDialog] = useState({
+    id: id,
+    image: image,
+    title: title,
+    content: content,
+    createdAt: createdAt,
+    author: author,
+    userImage: userImage,
+    likes: likes,
+    comments: comments,
+  });
+  const dialogRef = useRef();
+
   function handleClick() {
-    console.log("dialog" + id);
-    const dialog = document.getElementById("dialog" + id);
-    const closeBtn = dialog.querySelector(".closeBtn");
-    closeBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      dialog.close();
+    SetDialog({
+      id: id,
+      image: image,
+      title: title,
+      content: content,
+      createdAt: createdAt,
+      author: author,
+      userImage: userImage,
+      likes: likes,
+      comments: comments,
     });
-    dialog.showModal();
+    console.log(currentDialog);
+    dialogRef.current.openModal();
   }
   return (
     <>
-      <dialog id={"dialog" + id}>
-        <p>{title}</p>
-        <img src={image} alt="" />
-        <p>{content}</p>
-        <p>{createdAt}</p>
-        <p>{author}</p>
-        <p>{likes}</p>
-        <p>{comments}</p>
-        <button className="closeBtn">Close</button>
-      </dialog>
+      <Modal ref={dialogRef} props={{ currentDialog, setData, topic }}></Modal>
       <li className={styles.card} key={id} onClick={handleClick}>
         <div className={styles.cardContainer}>
           <img className={styles.cardImg} src={image} alt="" />
