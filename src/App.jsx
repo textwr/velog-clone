@@ -4,11 +4,24 @@ import { getTodos, setTodos, removeTodo } from "./data";
 import Card from "./components/Card/Card.jsx";
 import Menu from "./components/Menu/Menu.jsx";
 import PostForm from "./components/PostForm/PostForm.jsx";
+import ModifyForm from "./components/ModifyForm/ModifyForm.jsx";
 
 function App() {
   const [topic, setTopic] = useState("trending");
   const [status, setStatus] = useState("main");
   const [data, setData] = useState({ trending: [], latest: [], feed: [] });
+  const [currentDialog, SetDialog] = useState();
+  /*{
+    id: id,
+    image: image,
+    title: title,
+    content: content,
+    createdAt: createdAt,
+    author: author,
+    userImage: userImage,
+    likes: likes,
+    comments: comments,
+  }*/
 
   useEffect(() => {
     function getTodoList() {
@@ -20,6 +33,7 @@ function App() {
 
   function addTodo(todo, topic) {
     //Ref에서 value값 가져오기
+
     if (data[topic] === undefined) {
       setData((prev) => {
         prev[topic] = [todo];
@@ -33,11 +47,10 @@ function App() {
     }
     setData(data);
     setTodos(data);
-    console.log(data);
   }
 
   function remove(todo) {
-    const newData = removeTodo(todo);
+    const newData = removeTodo(todo, topic, data);
     setData(newData);
   }
 
@@ -47,7 +60,16 @@ function App() {
     listData = (
       <ul className="card-list">
         {data[topic].map((e) => (
-          <Card key={e.id} {...e} setData={setData} topic={topic} />
+          <Card
+            key={e.id}
+            {...e}
+            setData={setData}
+            topic={topic}
+            remove={remove}
+            setStatus={setStatus}
+            currentDialog={currentDialog}
+            SetDialog={SetDialog}
+          />
         ))}
       </ul>
     );
@@ -71,6 +93,20 @@ function App() {
           topic={topic}
           addTodo={addTodo}
         ></PostForm>
+      </>
+    );
+  } else if (status === "modify") {
+    return (
+      <>
+        <Header status={status} setStatus={setStatus} />
+        <ModifyForm
+          setData={setData}
+          topic={topic}
+          setStatus={setStatus}
+          addTodo={addTodo}
+          currentDialog={currentDialog}
+          SetDialog={SetDialog}
+        ></ModifyForm>
       </>
     );
   }

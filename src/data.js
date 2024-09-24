@@ -10,14 +10,17 @@ export function getTodos() {
 }
 
 export function setTodos(todos) {
+  console.log("setTodo");
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-export function removeTodo(todo) {
-  const todos = getTodos();
-  const newTodos = todos.filter((e) => e !== todo);
-  setTodos(newTodos);
-  return newTodos;
+export function removeTodo(todo, topic, data) {
+  //getTodos로 todos를 불러오면 []가 나와서 그냥 인자로 받음
+  const todos = data;
+  const newTodos = todos[topic].filter((e) => e.id !== todo.id);
+  todos[topic] = newTodos;
+  setTodos(todos);
+  return todos;
 }
 
 export const dummyData = {

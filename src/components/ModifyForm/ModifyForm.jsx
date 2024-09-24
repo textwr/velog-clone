@@ -2,53 +2,44 @@ import styles from "./styles.module.css";
 import { useRef } from "react";
 import AlertModal from "../AlertModal/PostFormModal";
 
-export default function PostForm({ setData, topic, setStatus, addTodo }) {
+export default function PostForm({ setData, topic, setStatus, currentDialog }) {
   const nameRef = useRef();
   const imageRef = useRef();
   const contentRef = useRef();
   const authorRef = useRef();
   const profileImgRef = useRef();
-  const dialogRef = useRef("작성 완료");
+  const dialogRef = useRef("수정 완료");
 
-  function submit(e) {
+  function modify(e) {
     e.preventDefault();
     const name = nameRef.current.value;
     const image = imageRef.current.value;
     const content = contentRef.current.value;
     const author = authorRef.current.value;
     const profileImg = profileImgRef.current.value;
+    const createdAt = currentDialog.createdAt;
+    const comments = currentDialog.comments;
+    const likes = currentDialog.likes;
+    const id = currentDialog.id;
+    const newData = {
+      author: author,
+      comments: comments,
+      content: content,
+      createdAt: createdAt,
+      id: id,
+      image: image,
+      likes: likes,
+      title: name,
+      userImage: profileImg,
+    };
 
     setData((prev) => {
-      let today = new Date();
-
-      let year = today.getFullYear(); // 년도
-      let month = today.getMonth() + 1; // 월
-      let date = today.getDate(); // 날짜
-      let hours = today.getHours(); // 시
-      let minutes = today.getMinutes(); // 분
-      let seconds = today.getSeconds(); // 초
-
-      month = month < 10 ? `0${month}` : month;
-      date = date < 10 ? `0${date}` : date;
-      hours = hours < 10 ? `0${hours}` : hours;
-      minutes = minutes < 10 ? `0${minutes}` : minutes;
-      seconds = seconds < 10 ? `0${seconds}` : seconds;
-
-      const newData = {
-        id: Date.now(),
-        title: name,
-        content: content,
-        author: author,
-        createdAt: `${year}-${month}-${date}T${hours}:${minutes}:${seconds}Z`,
-        image: image,
-        likes: 0,
-        userImage: profileImg,
-        comments: 0,
-      };
-
-      //prev[topic].push(newData);
-      addTodo(newData, topic);
-      dialogRef.current.openModalCreate();
+      prev[topic].forEach((e, idx) => {
+        if (e.id === currentDialog.id) {
+          prev[topic][idx] = newData;
+        }
+      });
+      dialogRef.current.openModalModify();
       return prev;
     });
   }
@@ -57,13 +48,14 @@ export default function PostForm({ setData, topic, setStatus, addTodo }) {
     <>
       <AlertModal ref={dialogRef} setStatus={setStatus}></AlertModal>
       <div className={styles.postForm}>
-        <form onSubmit={submit}>
+        <form onSubmit={modify}>
           <div className={styles.name}>
             <input
               type="text"
               name="name"
               id="name"
               placeholder="제목을 입력하세요"
+              defaultValue={currentDialog.title}
               ref={nameRef}
               required
             />
@@ -74,6 +66,7 @@ export default function PostForm({ setData, topic, setStatus, addTodo }) {
               name="image"
               id="image"
               placeholder="이미지 주소를 입력하세요"
+              defaultValue={currentDialog.userImage}
               ref={imageRef}
               required
             />
@@ -84,6 +77,7 @@ export default function PostForm({ setData, topic, setStatus, addTodo }) {
               name="content"
               id="content"
               placeholder="내용을 작성하세요"
+              defaultValue={currentDialog.content}
               ref={contentRef}
               required
             />
@@ -94,6 +88,7 @@ export default function PostForm({ setData, topic, setStatus, addTodo }) {
               name="author"
               id="author"
               placeholder="작성자를 써주세요"
+              defaultValue={currentDialog.author}
               ref={authorRef}
               required
             />
@@ -104,12 +99,13 @@ export default function PostForm({ setData, topic, setStatus, addTodo }) {
               name="userImage"
               id="userImage"
               placeholder="작성자의 프로필 이미지 주소를 써주세요"
+              defaultValue={currentDialog.userImage}
               ref={profileImgRef}
               required
             />
           </div>
           <div>
-            <input type="submit" value="upload!" />
+            <input type="submit" value="modify!" />
           </div>
         </form>
       </div>

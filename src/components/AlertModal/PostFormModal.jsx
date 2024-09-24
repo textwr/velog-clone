@@ -1,27 +1,28 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
 
-const modal = forwardRef(function Modal(setStatus, ref) {
+const modal = forwardRef(function Modal(props, ref) {
   const dialog = useRef();
+  const [content, setContent] = useState("");
 
   function handleClick() {
     dialog.current.close();
-    setStatus.setStatus("main");
+    props.setStatus("main");
   }
   useImperativeHandle(ref, () => {
+    if (ref.current !== null) setContent(ref.current);
     return {
-      openModal: () => {
+      openModalCreate: () => {
         dialog.current.showModal();
       },
-      closeModal: () => {
-        dialog.current.close();
-        setStatus.setStatus("main");
+      openModalModify: () => {
+        dialog.current.showModal();
       },
     };
   });
   return createPortal(
     <dialog ref={dialog}>
-      <p>작성 완료</p>
+      <p>{content}</p>
       <button onClick={handleClick}>close</button>
     </dialog>,
     document.getElementById("modal")

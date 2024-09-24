@@ -16,18 +16,11 @@ export default function Card({
   comments,
   setData,
   topic,
+  remove,
+  setStatus,
+  currentDialog,
+  SetDialog,
 }) {
-  const [currentDialog, SetDialog] = useState({
-    id: id,
-    image: image,
-    title: title,
-    content: content,
-    createdAt: createdAt,
-    author: author,
-    userImage: userImage,
-    likes: likes,
-    comments: comments,
-  });
   const dialogRef = useRef();
 
   function handleClick() {
@@ -42,12 +35,16 @@ export default function Card({
       likes: likes,
       comments: comments,
     });
-    console.log(currentDialog);
+    console.log("setting");
+
     dialogRef.current.openModal();
   }
   return (
     <>
-      <Modal ref={dialogRef} props={{ currentDialog, setData, topic }}></Modal>
+      <Modal
+        ref={dialogRef}
+        props={{ currentDialog, setData, topic, remove, setStatus }}
+      ></Modal>
       <li className={styles.card} key={id} onClick={handleClick}>
         <div className={styles.cardContainer}>
           <img className={styles.cardImg} src={image} alt="" />
